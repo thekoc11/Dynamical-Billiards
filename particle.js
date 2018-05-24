@@ -22,8 +22,10 @@ var particle = {
 	},
 
 	update: function() {
-		this.velocity.addTo(this.gravity*this._t);
-		this.position.addTo(this.velocity*this._t);
+		this.gravity.multiplyBy(this._t)
+		this.velocity.addTo(this.gravity);
+		this.velocity.multiplyBy(this._t);
+		this.position.addTo(this.velocity);
 	},
 
 	setTime: function(t) {
