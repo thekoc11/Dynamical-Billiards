@@ -20,7 +20,7 @@ window.onload = function() {
 //	console.log(verts[1].getAngle());
 	// console.log("velocity angle is",p.velocity.getAngle()*180/Math.PI);
 	// console.log("position angle is",p.position.getAngle()*180/Math.PI);
-	update();
+	// update();
 
 	function update() {
 		context.clearRect(0, 0, width, height);
@@ -30,7 +30,7 @@ window.onload = function() {
 		context.beginPath();
 		context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
 		context.fill();
-	 	var s = shape.create();
+	 	// var s = shape.create();
 		// context.moveTo(0,height);
 		// context.lineTo(window.innerWidth, 0);
 		// context.stroke();
