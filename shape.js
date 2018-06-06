@@ -24,12 +24,13 @@ var shape = {
 		console.log(width, height);
 
 
-		obj.noOfVert = obj.getRandomInt(6);
+		obj.noOfVert = obj.getRandomInt(13);
 		console.log(obj.noOfVert);
 
+//Loop for creating the vertices
 		for(var i = 0; i < obj.noOfVert; i += 1) {
-			obj._vertX = ((Math.random() * width) + (width * i))/obj.noOfVert;
-			obj._vertY = (Math.random() * height) //+ (height * i))/obj.noOfVert;
+			obj._vertX = (Math.random() * width);// + (width * i))/obj.noOfVert;
+			obj._vertY = (Math.random() * height); //+ (height * i))/obj.noOfVert;
 
 			console.log(obj._vertX);
 			console.log(obj._vertY);
@@ -37,34 +38,37 @@ var shape = {
 			context.fillStyle = "#FF0000";
 			context.beginPath();
 			context.arc(obj._vertX, obj._vertY, 8, 0, Math.PI * 2, false);
-			context.fill();	
-			
+			context.fill();
+
 			obj.verts.push(vector.create(obj._vertX, obj._vertY));
 			obj.vertsX.push(obj._vertX);
 			obj.vertsY.push(obj._vertY);
 
+		}
 
+		var data = trace.create(obj.vertsX, obj.vertsY);
+		console.log(data.x, data.y);
+		data = [data];
 
+		Plotly.newPlot('page', data, layout);
 
+//Check for loops(Crosses)
+		// for(var i = 0; i < obj.noOfVert; i += 1) {
+		// 	var j = obj.noOfVert % (i+1);
+		//
+		// 	if((obj.vertsY[j] ) || ())
+		// }
 
+		for(var i = 0; i < obj.noOfVert; i += 1) {
 
 			context.moveTo(obj.vertsX[i], obj.vertsY[i]);
-			
-
-
-
-
-
-
-
-
 
 			if(i+1 >= obj.noOfVert){
 				var j = 0;
 				context.lineTo(obj.vertsX[i-1], obj.vertsY[i-1]);
 				context.stroke();
 				context.moveTo(obj.vertsX[i], obj.vertsY[i]);
-					
+
 			}
 			else if(i > 0){
 				var j = i - 1;
@@ -80,7 +84,7 @@ var shape = {
 	calcTime: function(p){
 		var _an  = p.velocity.getAngle();
 		var hasCollided = false;
-		
+
 	},
 
 	getRandomInt: function(max){
