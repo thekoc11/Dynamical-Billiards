@@ -24,12 +24,12 @@ var shape = {
 		console.log(width, height);
 
 
-		obj.noOfVert = obj.getRandomInt(4);
+		obj.noOfVert = obj.getRandomInt(11);
 		console.log(obj.noOfVert);
 
 //Loop for creating the vertices
 		for(var i = 0; i < obj.noOfVert; i += 1) {
-			obj._vertX = (Math.random() * width );//+ (width * i))/obj.noOfVert;
+			obj._vertX = (Math.random() * width + (width * i))/obj.noOfVert;
 			obj._vertY = (Math.random() * height); //+ (height * i))/obj.noOfVert;
 
 			// console.log(obj._vertX);
