@@ -24,16 +24,16 @@ var shape = {
 		console.log(width, height);
 
 
-		obj.noOfVert = obj.getRandomInt(13);
+		obj.noOfVert = obj.getRandomInt(4);
 		console.log(obj.noOfVert);
 
 //Loop for creating the vertices
 		for(var i = 0; i < obj.noOfVert; i += 1) {
-			obj._vertX = (Math.random() * width);// + (width * i))/obj.noOfVert;
+			obj._vertX = (Math.random() * width );//+ (width * i))/obj.noOfVert;
 			obj._vertY = (Math.random() * height); //+ (height * i))/obj.noOfVert;
 
-			console.log(obj._vertX);
-			console.log(obj._vertY);
+			// console.log(obj._vertX);
+			// console.log(obj._vertY);
 
 			context.fillStyle = "#FF0000";
 			context.beginPath();
@@ -43,7 +43,9 @@ var shape = {
 			obj.verts.push(vector.create(obj._vertX, obj._vertY));
 			obj.vertsX.push(obj._vertX);
 			obj.vertsY.push(obj._vertY);
-
+			if(i>0){
+				obj.sides.push(vector.create((obj._vertX - obj.vertsX[i-1]), (obj._vertY - obj.vertsY[i-1])));
+			}
 		}
 
 		var data = trace.create(obj.vertsX, obj.vertsY);
@@ -60,7 +62,10 @@ var shape = {
 		// }
 
 		for(var i = 0; i < obj.noOfVert; i += 1) {
+			if(i < obj.noOfVert - 1) {
+				console.log(obj.sides[i].getSlope());
 
+			}
 			context.moveTo(obj.vertsX[i], obj.vertsY[i]);
 
 			if(i+1 >= obj.noOfVert){

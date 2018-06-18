@@ -40,6 +40,11 @@ var vector = {
 		return x;
 	},
 
+	getSlope: function() {
+		var x = (this._y / this._x);
+		return x;
+	},
+
 	setLength: function(length) {
 		var angle = this.getAngle();
 		this._x = Math.cos(angle) * length;

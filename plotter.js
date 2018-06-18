@@ -1,7 +1,7 @@
 var trace = {
   x: [],
   y: [],
-  mode: 'markers',
+  mode: 'lines+markers',
 
   create: function(x, y){
     var obj = Object.create(this);
