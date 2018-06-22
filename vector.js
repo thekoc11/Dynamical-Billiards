@@ -32,12 +32,12 @@ var vector = {
 	},
 
 	getAngle: function() {
-		var x = Math.atan2(this._y, this._x) ;//* 180 / Math.PI;
+		var x = Math.atan2(this._y, this._x) ;//
 		if (x < 0)
 		{
 			x = 2*Math.PI + x;
 		}
-		return x;
+		return x * 180 / Math.PI;;
 	},
 
 	getSlope: function() {
