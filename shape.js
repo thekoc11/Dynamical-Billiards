@@ -24,7 +24,7 @@ var shape = {
 		console.log(width, height);
 
 
-		obj.noOfVert = obj.getRandomInt(5);
+		obj.noOfVert = obj.getRandomInt(6);
 		console.log(obj.noOfVert);
 
 //Loop for creating the vertices
@@ -46,7 +46,9 @@ var shape = {
 			// obj.vertsY.push(obj._vertY);
 			if(i>0){
 				obj.sides.push(vector.create((obj._vertX - obj.vertsX[i-1]), (obj._vertY - obj.vertsY[i-1])));
+			//	obj.sides.push(vector.create((obj.vertsX[0] - obj._vertX), (obj.vertsY[0] - obj._vertY)));
 			}
+
 		}
 
 		var data = trace.create(obj.vertsX, obj.vertsY);
@@ -55,6 +57,7 @@ var shape = {
 
 		Plotly.newPlot('page', data, layout);
 
+		//obj.checkAngle();
 //Check for loops(Crosses)
 		// for(var i = 0; i < obj.noOfVert; i += 1) {
 		// 	var j = obj.noOfVert % (i+1);
@@ -102,12 +105,21 @@ var shape = {
 	generateRandomPoint: function(){
 		//var i = 0;
 		//var obj = Object.create(this);
-		if (this.sides.length == 0){
+		if (this.sides.length <= 1){
 
 			this._vertX = Math.random() * window.innerWidth;
 			this._vertY = Math.random() * window.innerHeight;
 
-
+			//Just to make things easier, ensure that first two vertices are in the first half wrt width and height
+			if(this._vertX > window.innerWidth/2){
+				this._vertX -= window.innerWidth/2;
+			}
+			if(this._vertY > window.innerHeight/2){
+				this._vertY -= window.innerHeight/2;
+			}
+			this.verts.push(vector.create(this._vertX, this._vertY));
+			this.vertsX.push(this._vertX);
+			this.vertsY.push(this._vertY);
 
 		}
 		else{
@@ -115,7 +127,7 @@ var shape = {
 			var l = this.sides.length;
 			var x = Math.max(...this.vertsX),
 			y = Math.max(...this.vertsY);
-
+//Randomly allocate the nth vertwx at the maximum widh or height.
 			var seed = this.getRandomInt(5);
 			console.log("Seed is", seed);
 			if(seed == 3){
@@ -127,26 +139,65 @@ var shape = {
 				this._vertY = Math.random() * (window.innerHeight - y) + y;
 			}
 
+			this.checkAngle();
 			var locVertsX = [this.vertsX[0], this.vertsX[l-1], this.vertsX[l]],
 			locVertsY = [this.vertsY[0], this.vertsY[l-1], this.vertsY[l]];
-
+			var c = [], m = [];
 			var locSides = [];
 			for(var i = 0; i < 3; i += 1)
 			{
 				locSides.push(vector.create((locVertsX[(i + 1)%3] - locVertsX[(i % 3)]), (locVertsY[(i + 1) % 3] - locVertsY[(i % 3)])));
+				m.push(locSides[i].getSlope());
+
 			}
 			for(var i = 0; i < 3; i += 1)
 			{
-				console.log("From function", locSides[i].getAngle(), locSides[i].getSlope());
+				c.push(locVertsY[(i % 3)] - m[i] * locVertsX[(i % 3)]);
+				console.log("From function", locSides[i].getAngle(), locSides[i].getSlope(), c[i]);
+				//var m = locSides[i].getSlope();
 			}
+			var eq = (this._vertY) - m[0] * (this._vertX + c[0]);
+			var eq1 = (this._vertY) - m[1] * (this._vertX + c[1]);
+ 			console.log("The value of eq is", eq);
+			console.log("the second eq is", eq1);
+			if(!((eq > 0 && eq1 < 0)||(eq < 0 && eq1 > 0)))
+			{
+				console.log("-----------------POINT REGENERATED------------------");
+				this.generateRandomPoint();
+			}
+			else{
+				this.verts.push(vector.create(this._vertX, this._vertY));
+				this.vertsX.push(this._vertX);
+				this.vertsY.push(this._vertY);
+			}
+				// if(!(locSides[i].getSlope() = NaN))
+				// {
+				//
+				// }
+
 
 		}
+		//this.checkAngle(this._vertX, this._vertY);
 
-		this.verts.push(vector.create(this._vertX, this._vertY));
-		this.vertsX.push(this._vertX);
-		this.vertsY.push(this._vertY);
 	},
 
-
+	checkAngle: function(){
+		if(this.verts.length > 2){
+			var l = this.sides.length;
+			var locSides = this.sides;
+			//locSides.pop();
+			//locSides.push(vector.create((newX - this.vertsX[l]),(newY - this.vertsY[l])));
+			//locSides.push(vector.create((this.vertsX[0] - newX), (this.vertsY[0] - newY)));
+			if(Math.abs(locSides[l-1].getAngle() - locSides[l-2].getAngle()) > 140){
+				console.log("the angle between the new and the old side is", (locSides[l-1].getAngle() - locSides[l-2].getAngle()));
+				var tempX = this.vertsX[l],
+				tempY = this.vertsY[l];
+				this.vertsX[l] = this.vertsX[l - 1];
+				this.vertsY[l] = this.vertsY[l - 1];
+				this.vertsX[l - 1] = tempX;
+				this.vertsY[l - 1] = tempY;
+			}
+		}
+	},
 
 }
