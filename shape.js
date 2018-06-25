@@ -29,12 +29,6 @@ var shape = {
 
 //Loop for creating the vertices
 		for(var i = 0; i < obj.noOfVert; i += 1) {
-			// obj._vertX = (Math.random() * width);// + (width * i))/obj.noOfVert;
-			// obj._vertY = (Math.random() * height); //+ (height * i))/obj.noOfVert;
-
-			// console.log(obj._vertX);
-			// console.log(obj._vertY);
-
 			obj.generateRandomPoint();
 			context.fillStyle = "#FF0000";
 			context.beginPath();
@@ -57,7 +51,7 @@ var shape = {
 
 		Plotly.newPlot('page', data, layout);
 
-		//obj.checkAngle();
+
 //Check for loops(Crosses)
 		// for(var i = 0; i < obj.noOfVert; i += 1) {
 		// 	var j = obj.noOfVert % (i+1);
@@ -124,12 +118,16 @@ var shape = {
 		}
 		else{
 
-			var l = this.sides.length;
+			var l = this.sides.length, lv = this.vertsX.length;
 			var x = Math.max(...this.vertsX),
-			y = Math.max(...this.vertsY);
+			y = Math.max(...this.vertsY),
+			_x = Math.min(...this.vertsX),
+			_y = Math.min(...this.vertsY),
+			x1 = (x + _x)/2,
+			y1 = (y + _y)/2;
 //Randomly allocate the nth vertwx at the maximum widh or height.
 			var seed = this.getRandomInt(5);
-			console.log("Seed is", seed);
+			// console.log("Seed is", seed);
 			if(seed == 3){
 				this._vertX = (Math.random() * (window.innerWidth - x) + x);
 				this._vertY = Math.random() * window.innerHeight;
@@ -139,64 +137,64 @@ var shape = {
 				this._vertY = Math.random() * (window.innerHeight - y) + y;
 			}
 
-			this.checkAngle();
-			var locVertsX = [this.vertsX[0], this.vertsX[l-1], this.vertsX[l]],
-			locVertsY = [this.vertsY[0], this.vertsY[l-1], this.vertsY[l]];
+
+			var locVertsX = [this.vertsX[0], this.vertsX[lv-2], this.vertsX[lv-1]],
+			locVertsY = [this.vertsY[0], this.vertsY[lv-2], this.vertsY[lv-1]];
 			var c = [], m = [];
 			var locSides = [];
+			console.log(locVertsX);
+			console.log(locVertsY);
+
 			for(var i = 0; i < 3; i += 1)
 			{
 				locSides.push(vector.create((locVertsX[(i + 1)%3] - locVertsX[(i % 3)]), (locVertsY[(i + 1) % 3] - locVertsY[(i % 3)])));
 				m.push(locSides[i].getSlope());
 
 			}
+			var pointDir = this.getDirection(locSides, locVertsX, locVertsY);
+			console.log("greater than?", pointDir);
 			for(var i = 0; i < 3; i += 1)
 			{
 				c.push(locVertsY[(i % 3)] - m[i] * locVertsX[(i % 3)]);
-				console.log("From function", locSides[i].getAngle(), locSides[i].getSlope(), c[i]);
+				//console.log("From function", locSides[i].getAngle(), locSides[i].getSlope(), c[i]);
 				//var m = locSides[i].getSlope();
 			}
 			var eq = (this._vertY) - m[0] * (this._vertX + c[0]);
 			var eq1 = (this._vertY) - m[1] * (this._vertX + c[1]);
  			console.log("The value of eq is", eq);
 			console.log("the second eq is", eq1);
-			if(!((eq > 0 && eq1 < 0)||(eq < 0 && eq1 > 0)))
-			{
-				console.log("-----------------POINT REGENERATED------------------");
-				this.generateRandomPoint();
-			}
-			else{
+
+			// if(!((eq > 0 && eq1 < 0)||(eq < 0 && eq1 > 0)))
+			// {
+			// 	console.log("-----------------POINT REGENERATED------------------");
+			// 	this.generateRandomPoint();
+			// }
+			// else{
 				this.verts.push(vector.create(this._vertX, this._vertY));
 				this.vertsX.push(this._vertX);
 				this.vertsY.push(this._vertY);
-			}
-				// if(!(locSides[i].getSlope() = NaN))
-				// {
-				//
-				// }
-
-
+			// }
 		}
-		//this.checkAngle(this._vertX, this._vertY);
-
 	},
 
-	checkAngle: function(){
-		if(this.verts.length > 2){
-			var l = this.sides.length;
-			var locSides = this.sides;
-			//locSides.pop();
-			//locSides.push(vector.create((newX - this.vertsX[l]),(newY - this.vertsY[l])));
-			//locSides.push(vector.create((this.vertsX[0] - newX), (this.vertsY[0] - newY)));
-			if(Math.abs(locSides[l-1].getAngle() - locSides[l-2].getAngle()) > 140){
-				console.log("the angle between the new and the old side is", (locSides[l-1].getAngle() - locSides[l-2].getAngle()));
-				var tempX = this.vertsX[l],
-				tempY = this.vertsY[l];
-				this.vertsX[l] = this.vertsX[l - 1];
-				this.vertsY[l] = this.vertsY[l - 1];
-				this.vertsX[l - 1] = tempX;
-				this.vertsY[l - 1] = tempY;
-			}
+	getDirection: function(sides, vertsX, vertsY){
+		var  s1 = sides[0], s2 = sides[1], s3 = sides[2];
+		for(var i=0; i<3; i+=1){
+			console.log("From function", sides[i].getAngle(), sides[i].getSlope());
+
+		}
+		var angle1 = s1.getAngle(), angle2 = s2.getAngle(), angle3 = s3.getAngle();
+		if( ((angle1>0 && angle1<90)  && (angle2>=90 && angle2<180)) || ((angle1>270 && angle1<360) && (angle2>180 && angle2<270))){
+			return 1;
+		}
+		else if ((angle1>90 && angle1<180)  && (angle3>270 || angle3<90)) {
+			return true;
+		}
+		else if ((angle1>=270 && angle1<360) && (angle3<90)) {
+			return true;
+		}
+		else {
+			return false;
 		}
 	},
 
