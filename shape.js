@@ -29,6 +29,11 @@ var shape = {
 
 //Loop for creating the vertices
 		for(var i = 0; i < obj.noOfVert; i += 1) {
+
+
+			// obj._vertX = ((Math.random() * width) + (width * r_x))/obj.noOfVert;
+			// obj._vertY = ((Math.random() * height) + (height * r_y))/obj.noOfVert;
+
 			obj.generateRandomPoint();
 			context.fillStyle = "#FF0000";
 			context.beginPath();
@@ -101,16 +106,21 @@ var shape = {
 		//var obj = Object.create(this);
 		if (this.sides.length <= 1){
 
-			this._vertX = Math.random() * window.innerWidth;
-			this._vertY = Math.random() * window.innerHeight;
+			var r_x = this.getRandomInt(this.noOfVert + 3);
+			r_x = r_x - 3;
+			var r_y = this.getRandomInt(this.noOfVert + 3);
+			r_y = r_y - 3;
+			console.log("RX and RY are", r_x, r_y);
+			this._vertX = ((Math.random() * window.innerWidth) + (window.innerWidth*r_x))/this.noOfVert;
+			this._vertY = ((Math.random() * window.innerHeight) + (window.innerHeight*r_y))/this.noOfVert;
 
 			//Just to make things easier, ensure that first two vertices are in the first half wrt width and height
-			if(this._vertX > window.innerWidth/2){
-				this._vertX -= window.innerWidth/2;
-			}
-			if(this._vertY > window.innerHeight/2){
-				this._vertY -= window.innerHeight/2;
-			}
+			// if(this._vertX > window.innerWidth/2){
+			// 	this._vertX -= window.innerWidth/2;
+			// }
+			// if(this._vertY > window.innerHeight/2){
+			// 	this._vertY -= window.innerHeight/2;
+			// }
 			this.verts.push(vector.create(this._vertX, this._vertY));
 			this.vertsX.push(this._vertX);
 			this.vertsY.push(this._vertY);
@@ -126,16 +136,23 @@ var shape = {
 			x1 = (x + _x)/2,
 			y1 = (y + _y)/2;
 //Randomly allocate the nth vertwx at the maximum widh or height.
-			var seed = this.getRandomInt(5);
-			// console.log("Seed is", seed);
-			if(seed == 3){
-				this._vertX = (Math.random() * (window.innerWidth - x) + x);
-				this._vertY = Math.random() * window.innerHeight;
-		}
-			else{
-				this._vertX = Math.random() * window.innerWidth;
-				this._vertY = Math.random() * (window.innerHeight - y) + y;
-			}
+		// 	var seed = this.getRandomInt(5);
+		// 	// console.log("Seed is", seed);
+		// 	if(seed == 3){
+		// 		this._vertX = (Math.random() * (window.innerWidth - x1) + x1);
+		// 		this._vertY = Math.random() * window.innerHeight;
+		// }
+		// 	else{
+		// 		this._vertX = Math.random() * window.innerWidth;
+		// 		this._vertY = Math.random() * (window.innerHeight - y1) + y1;
+		// 	}
+		var r_x = this.getRandomInt(this.noOfVert + 3);
+		r_x = r_x - 3;
+		var r_y = this.getRandomInt(this.noOfVert + 3);
+		r_y = r_y - 3;
+		console.log("RX and RY are", r_x, r_y);
+		this._vertX = ((Math.random() * window.innerWidth) + (window.innerWidth*r_x))/this.noOfVert;
+		this._vertY = ((Math.random() * window.innerHeight) + (window.innerHeight*r_y))/this.noOfVert;
 
 
 			var locVertsX = [this.vertsX[0], this.vertsX[lv-2], this.vertsX[lv-1]],
@@ -184,18 +201,19 @@ var shape = {
 
 		}
 		var angle1 = s1.getAngle(), angle2 = s2.getAngle(), angle3 = s3.getAngle();
-		if( ((angle1>0 && angle1<90)  && (angle2>=90 && angle2<180)) || ((angle1>270 && angle1<360) && (angle2>180 && angle2<270))){
-			return 1;
-		}
-		else if ((angle1>90 && angle1<180)  && (angle3>270 || angle3<90)) {
-			return true;
-		}
-		else if ((angle1>=270 && angle1<360) && (angle3<90)) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		// if( ((angle1>0 && angle1<90)  && (angle2>=90 && angle2<180)) || ((angle1>270 && angle1<360) && (angle2>180 && angle2<270))){
+		// 	return 1;
+		// }
+		// else if ((angle1>90 && angle1<180)  && (angle3>270 || angle3<90)) {
+		// 	return true;
+		// }
+		// else if ((angle1>=270 && angle1<360) && (angle3<90)) {
+		// 	return true;
+		// }
+		// else {
+		// 	return false;
+		// }
+		return (angle2 - angle1);
 	},
 
 }
