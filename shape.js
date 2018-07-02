@@ -12,8 +12,6 @@ var shape = {
 	create: function(){
 		var obj = Object.create(this);
 		obj.side = 3;
-		// obj.vertsX = [0, window.innerWidth/2, window.innerWidth];
-		// obj.vertsY = [0, window.innerHeight, 0];
 		var canvas = document.getElementById("canvas"),
 		context = canvas.getContext("2d"),
 		width = canvas.width = window.innerWidth,
@@ -23,31 +21,25 @@ var shape = {
 
 		console.log(width, height);
 
-
 		obj.noOfVert = obj.getRandomInt(6);
 		console.log(obj.noOfVert);
+		// var RXMap = new Map(), RYMap = new Map();
+		// for(var i = 0; i < this.noOfVert; i+=1){
+		// 	RXMap.set(i, false);
+		// 	RYMap.set(i, false);
+		}
 
 //Loop for creating the vertices
-		for(var i = 0; i < obj.noOfVert; i += 1) {
-
-
-			// obj._vertX = ((Math.random() * width) + (width * r_x))/obj.noOfVert;
-			// obj._vertY = ((Math.random() * height) + (height * r_y))/obj.noOfVert;
-
-			obj.generateRandomPoint();
+		for (var i = 0; i < obj.noOfVert; i += 1) {
+			obj.generateRandomPoint(/*0, obj.noOfVert, RXMap, RYMap*/);
 			context.fillStyle = "#FF0000";
 			context.beginPath();
 			context.arc(obj._vertX, obj._vertY, 8, 0, Math.PI * 2, false);
 			context.fill();
-
-			// obj.verts.push(vector.create(obj._vertX, obj._vertY));
-			// obj.vertsX.push(obj._vertX);
-			// obj.vertsY.push(obj._vertY);
 			if(i>0){
 				obj.sides.push(vector.create((obj._vertX - obj.vertsX[i-1]), (obj._vertY - obj.vertsY[i-1])));
 			//	obj.sides.push(vector.create((obj.vertsX[0] - obj._vertX), (obj.vertsY[0] - obj._vertY)));
 			}
-
 		}
 
 		var data = trace.create(obj.vertsX, obj.vertsY);
@@ -55,20 +47,16 @@ var shape = {
 		data = [data];
 
 		Plotly.newPlot('page', data, layout);
-
-
 //Check for loops(Crosses)
 		// for(var i = 0; i < obj.noOfVert; i += 1) {
 		// 	var j = obj.noOfVert % (i+1);
 		//
 		// 	if((obj.vertsY[j] ) || ())
 		// }
-
 		for(var i = 0; i < obj.noOfVert; i += 1) {
 			if(i < obj.noOfVert - 1) {
 				console.log(obj.sides[i].getSlope());
-				console.log(obj.sides[i].getAngle());
-
+  			console.log(obj.sides[i].getAngle());
 			}
 			context.moveTo(obj.vertsX[i], obj.vertsY[i]);
 
@@ -77,16 +65,12 @@ var shape = {
 				context.lineTo(obj.vertsX[i-1], obj.vertsY[i-1]);
 				context.stroke();
 				context.moveTo(obj.vertsX[i], obj.vertsY[i]);
-
 			}
 			else if(i > 0){
 				var j = i - 1;
 			}
 			context.lineTo(obj.vertsX[j], obj.vertsY[j]);
 			context.stroke();
-			// obj._side = vector.create((obj.vertsX[j]-obj.vertsX[i]), (obj.vertsY[j] - obj.vertsY[i]));
-			// obj.sides.push(obj._side);
-		//	console.log(obj._side.getAngle()*180/Math.PI);
 		}
 	},
 
@@ -101,26 +85,42 @@ var shape = {
 		return Math.floor(Math.random() * (max - 3) + 3);
 	},
 
-	generateRandomPoint: function(){
+	generateRandomPoint: function(/*ctr, nVert, xMap, yMap*/){
 		//var i = 0;
-		//var obj = Object.create(this);
+		// var obj = Object.create(this);
+		// if(ctr < nVert)
+		// {
+		// 	var r_x = this.getRandomInt(nVert + 3);
+		// 	r_x = r_x - 3;
+		// 	var r_y = this.getRandomInt(nVert + 3);
+		// 	r_y = r_y - 3;
+		//
+		// 	if(!(xMap.get(r_x)) || !(yMap.get(r_y))){
+		// 		console.log("RX and RY are", r_x, r_y);
+		// 		this._vertX = ((Math.random() * window.innerWidth) + (window.innerWidth*r_x))/nVert;
+		// 		this._vertY = ((Math.random() * window.innerHeight) + (window.innerHeight*r_y))/nVert;
+		// 		xMap.set(r_x, true);
+		// 		yMap.set(r_y, true);
+		// 		this.verts.push(vector.create(this._vertX, this._vertY));
+		// 		this.vertsX.push(this._vertX);
+		// 		this.vertsY.push(this._vertY);
+		// 		ctr += 1
+		// 		this.generateRandomPoint(ctr, nVert, xMap, yMap);
+		// 	}
+		// 	else{
+		// 		this.generateRandomPoint(ctr, nVert, xMap, yMap);
+		// 	}
+		//
+		// }
+		// else{
+		// 	return;
+		// }
+
+
 		if (this.sides.length <= 1){
 
-			var r_x = this.getRandomInt(this.noOfVert + 3);
-			r_x = r_x - 3;
-			var r_y = this.getRandomInt(this.noOfVert + 3);
-			r_y = r_y - 3;
-			console.log("RX and RY are", r_x, r_y);
-			this._vertX = ((Math.random() * window.innerWidth) + (window.innerWidth*r_x))/this.noOfVert;
-			this._vertY = ((Math.random() * window.innerHeight) + (window.innerHeight*r_y))/this.noOfVert;
-
-			//Just to make things easier, ensure that first two vertices are in the first half wrt width and height
-			// if(this._vertX > window.innerWidth/2){
-			// 	this._vertX -= window.innerWidth/2;
-			// }
-			// if(this._vertY > window.innerHeight/2){
-			// 	this._vertY -= window.innerHeight/2;
-			// }
+			this._vertX = ((Math.random() * window.innerWidth);// + (window.innerWidth*r_x))/nVert;
+			this._vertY = ((Math.random() * window.innerHeight);// + (window.innerHeight*r_y))/nVert;
 			this.verts.push(vector.create(this._vertX, this._vertY));
 			this.vertsX.push(this._vertX);
 			this.vertsY.push(this._vertY);
@@ -135,24 +135,8 @@ var shape = {
 			_y = Math.min(...this.vertsY),
 			x1 = (x + _x)/2,
 			y1 = (y + _y)/2;
-//Randomly allocate the nth vertwx at the maximum widh or height.
-		// 	var seed = this.getRandomInt(5);
-		// 	// console.log("Seed is", seed);
-		// 	if(seed == 3){
-		// 		this._vertX = (Math.random() * (window.innerWidth - x1) + x1);
-		// 		this._vertY = Math.random() * window.innerHeight;
-		// }
-		// 	else{
-		// 		this._vertX = Math.random() * window.innerWidth;
-		// 		this._vertY = Math.random() * (window.innerHeight - y1) + y1;
-		// 	}
-		var r_x = this.getRandomInt(this.noOfVert + 3);
-		r_x = r_x - 3;
-		var r_y = this.getRandomInt(this.noOfVert + 3);
-		r_y = r_y - 3;
-		console.log("RX and RY are", r_x, r_y);
-		this._vertX = ((Math.random() * window.innerWidth) + (window.innerWidth*r_x))/this.noOfVert;
-		this._vertY = ((Math.random() * window.innerHeight) + (window.innerHeight*r_y))/this.noOfVert;
+
+
 
 
 			var locVertsX = [this.vertsX[0], this.vertsX[lv-2], this.vertsX[lv-1]],
