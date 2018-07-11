@@ -9,6 +9,16 @@ var vector = {
 		return obj;
 	},
 
+	createP: function(l, a) {
+		var obj = Object.create(this);
+		a = a * Math.PI/180;
+		var x = Math.cos(a) * l;
+		var y = Math.sin(a) * l;
+		obj.setX(x);
+		obj.setY(y);
+		return obj;
+	},
+
 	setX: function(value) {
 		this._x = value;
 	},

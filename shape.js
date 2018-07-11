@@ -7,7 +7,8 @@ var shape = {
 	noOfVert: 3,
 	_vertX: 0,
 	_vertY: 0,
-	_side: 0,
+	_sideX: [],
+	_sideY: [],
 
 	create: function(){
 		var obj = Object.create(this);
@@ -17,18 +18,12 @@ var shape = {
 		width = canvas.width = window.innerWidth,
 		height = canvas.height = window.innerHeight;
 
-		context.transform(1, 0, 0, -1, 0, height);
+		context.transform(0.5, 0, 0, -0.5, width/2, height/2);
 
 		console.log(width, height);
 
-		obj.noOfVert = obj.getRandomInt(6);
+		obj.noOfVert = obj.getRandomInt(8);
 		console.log(obj.noOfVert);
-		// var RXMap = new Map(), RYMap = new Map();
-		// for(var i = 0; i < this.noOfVert; i+=1){
-		// 	RXMap.set(i, false);
-		// 	RYMap.set(i, false);
-		}
-
 //Loop for creating the vertices
 		for (var i = 0; i < obj.noOfVert; i += 1) {
 			obj.generateRandomPoint(/*0, obj.noOfVert, RXMap, RYMap*/);
@@ -36,9 +31,15 @@ var shape = {
 			context.beginPath();
 			context.arc(obj._vertX, obj._vertY, 8, 0, Math.PI * 2, false);
 			context.fill();
+			var vertLen = this.verts.length;
 			if(i>0){
-				obj.sides.push(vector.create((obj._vertX - obj.vertsX[i-1]), (obj._vertY - obj.vertsY[i-1])));
-			//	obj.sides.push(vector.create((obj.vertsX[0] - obj._vertX), (obj.vertsY[0] - obj._vertY)));
+				for(var j = 0; j <= 1; j++){
+					obj._sideX.push(obj.vertsX[vertLen - (2 - j)]);
+					obj._sideY.push(obj.vertsY[vertLen - (2 - j)]);
+				}
+				obj.sides.push(side.create(obj._sideX[0], obj._sideY[0], obj._sideX[1], obj._sideY[1]));
+				obj._sideX.splice(0, obj._sideX.length);
+				obj._sideY.splice(0, obj._sideY.length);
 			}
 		}
 
@@ -56,7 +57,7 @@ var shape = {
 		for(var i = 0; i < obj.noOfVert; i += 1) {
 			if(i < obj.noOfVert - 1) {
 				console.log(obj.sides[i].getSlope());
-  			console.log(obj.sides[i].getAngle());
+  		//	console.log(obj.sides[i].getAngle());
 			}
 			context.moveTo(obj.vertsX[i], obj.vertsY[i]);
 
@@ -85,42 +86,18 @@ var shape = {
 		return Math.floor(Math.random() * (max - 3) + 3);
 	},
 
-	generateRandomPoint: function(/*ctr, nVert, xMap, yMap*/){
-		//var i = 0;
-		// var obj = Object.create(this);
-		// if(ctr < nVert)
-		// {
-		// 	var r_x = this.getRandomInt(nVert + 3);
-		// 	r_x = r_x - 3;
-		// 	var r_y = this.getRandomInt(nVert + 3);
-		// 	r_y = r_y - 3;
-		//
-		// 	if(!(xMap.get(r_x)) || !(yMap.get(r_y))){
-		// 		console.log("RX and RY are", r_x, r_y);
-		// 		this._vertX = ((Math.random() * window.innerWidth) + (window.innerWidth*r_x))/nVert;
-		// 		this._vertY = ((Math.random() * window.innerHeight) + (window.innerHeight*r_y))/nVert;
-		// 		xMap.set(r_x, true);
-		// 		yMap.set(r_y, true);
-		// 		this.verts.push(vector.create(this._vertX, this._vertY));
-		// 		this.vertsX.push(this._vertX);
-		// 		this.vertsY.push(this._vertY);
-		// 		ctr += 1
-		// 		this.generateRandomPoint(ctr, nVert, xMap, yMap);
-		// 	}
-		// 	else{
-		// 		this.generateRandomPoint(ctr, nVert, xMap, yMap);
-		// 	}
-		//
-		// }
-		// else{
-		// 	return;
-		// }
+	generateRandomPoint: function() {
+			if (this.verts.length < 1){
 
-
-		if (this.sides.length <= 1){
-
-			this._vertX = ((Math.random() * window.innerWidth);// + (window.innerWidth*r_x))/nVert;
-			this._vertY = ((Math.random() * window.innerHeight);// + (window.innerHeight*r_y))/nVert;
+			var _side = vector.create(window.innerWidth/2, window.innerHeight/2);
+			var _length = _side.getLength();
+			var lenGen = Math.random() * _length;
+			var angleGen =  0;//Math.random() * 30 + this.sides.length*20;
+			console.log("The generated angle is :", angleGen);
+			console.log("The generated length is :", lenGen);
+			var tempVert = vector.createP(lenGen, angleGen);
+			this._vertX = tempVert.getX();// + (window.innerWidth*r_x))/nVert;
+			this._vertY = tempVert.getY();// + (window.innerHeight*r_y))/nVert;
 			this.verts.push(vector.create(this._vertX, this._vertY));
 			this.vertsX.push(this._vertX);
 			this.vertsY.push(this._vertY);
@@ -129,52 +106,36 @@ var shape = {
 		else{
 
 			var l = this.sides.length, lv = this.vertsX.length;
-			var x = Math.max(...this.vertsX),
-			y = Math.max(...this.vertsY),
-			_x = Math.min(...this.vertsX),
-			_y = Math.min(...this.vertsY),
-			x1 = (x + _x)/2,
-			y1 = (y + _y)/2;
 
-
-
-
-			var locVertsX = [this.vertsX[0], this.vertsX[lv-2], this.vertsX[lv-1]],
-			locVertsY = [this.vertsY[0], this.vertsY[lv-2], this.vertsY[lv-1]];
-			var c = [], m = [];
-			var locSides = [];
-			console.log(locVertsX);
-			console.log(locVertsY);
-
-			for(var i = 0; i < 3; i += 1)
+			var c = 0;//Math.abs(this.sides[l - 1].getY_Intercept());
+			var _length = 0; c = 0;
+			if( c > this.verts[lv - 1].getLength() && c < 1.75*this.verts[lv-1].getLength())
 			{
-				locSides.push(vector.create((locVertsX[(i + 1)%3] - locVertsX[(i % 3)]), (locVertsY[(i + 1) % 3] - locVertsY[(i % 3)])));
-				m.push(locSides[i].getSlope());
-
+				_length = c;
 			}
-			var pointDir = this.getDirection(locSides, locVertsX, locVertsY);
-			console.log("greater than?", pointDir);
-			for(var i = 0; i < 3; i += 1)
-			{
-				c.push(locVertsY[(i % 3)] - m[i] * locVertsX[(i % 3)]);
-				//console.log("From function", locSides[i].getAngle(), locSides[i].getSlope(), c[i]);
-				//var m = locSides[i].getSlope();
+			else {
+				_length = this.verts[lv - 1].getLength();
 			}
-			var eq = (this._vertY) - m[0] * (this._vertX + c[0]);
-			var eq1 = (this._vertY) - m[1] * (this._vertX + c[1]);
- 			console.log("The value of eq is", eq);
-			console.log("the second eq is", eq1);
 
-			// if(!((eq > 0 && eq1 < 0)||(eq < 0 && eq1 > 0)))
-			// {
-			// 	console.log("-----------------POINT REGENERATED------------------");
-			// 	this.generateRandomPoint();
-			// }
-			// else{
-				this.verts.push(vector.create(this._vertX, this._vertY));
-				this.vertsX.push(this._vertX);
-				this.vertsY.push(this._vertY);
-			// }
+			var recent_angle = this.verts[lv - 1].getAngle();
+
+			var angleGen = Math.random() * (360/this.noOfVert) + recent_angle + (180/this.noOfVert);
+			console.log("The generated angle is :", angleGen);
+
+			var _lengthL = _length, _lengthU = _length;
+			var lenGen = Math.random() * (_lengthU - _lengthL) + _lengthL;
+
+			console.log("The generated length is :", lenGen);
+
+			var tempVert = vector.createP(lenGen, angleGen);
+
+			this._vertX = tempVert.getX();
+			this._vertY = tempVert.getY();
+
+			console.log("New X and Y:", this._vertX, this._vertY);
+			this.verts.push(vector.create(this._vertX, this._vertY));
+			this.vertsX.push(this._vertX);
+			this.vertsY.push(this._vertY);
 		}
 	},
 
