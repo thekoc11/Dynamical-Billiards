@@ -10,7 +10,7 @@ var shape = {
 	_sideX: [],
 	_sideY: [],
 
-	create: function(){
+	create: function(n){
 		var obj = Object.create(this);
 		obj.side = 3;
 		var canvas = document.getElementById("canvas"),
@@ -22,7 +22,7 @@ var shape = {
 
 		console.log(width, height);
 
-		obj.noOfVert = obj.getRandomInt(8);
+		obj.noOfVert = obj.getRandomInt(n);
 		console.log(obj.noOfVert);
 //Loop for creating the vertices
 		for (var i = 0; i < obj.noOfVert; i += 1) {
@@ -43,6 +43,11 @@ var shape = {
 			}
 		}
 
+		if(obj.sides.length == obj.verts.length - 1)
+		{
+			var l = obj.verts.length - 1;
+			obj.sides.push(side.create(obj.vertsX[l], obj.vertsY[l], obj.vertsX[0], obj.vertsY[0]));
+		}
 		var data = trace.create(obj.vertsX, obj.vertsY);
 		console.log(data.x, data.y);
 		data = [data];
@@ -73,11 +78,41 @@ var shape = {
 			context.lineTo(obj.vertsX[j], obj.vertsY[j]);
 			context.stroke();
 		}
+		return obj;
 	},
 
-	calcTime: function(p){
+	calcTimeIndex: function(p){
 		var _an  = p.velocity.getAngle();
-		var hasCollided = false;
+		var time = 1, ti = [], tj = [];
+		var least_index =	 0;
+
+		// console.log("The number os sides is:", this.sides.length);
+		var x1 = p.position.getX(), y1 = p.position.getY();
+		var vx = p.velocity.getX(), vy = p.velocity.getY();
+		console.log("Particle position and veloity are", x1, y1,  ":", vx, vy);
+		var s = this.sides.length;
+		for(var i = 0; i < s; i += 1){
+			var m = this.sides[i].getSlope(),
+					c = this.sides[i].getY_Intercept();
+			ti.push((m*x1 + c - y1)/(vy - m*vx));
+			if(ti[i] <= 0.00001){
+				tj.push(Infinity);
+			}
+			else{
+				tj.push(ti[i]);
+			}
+
+			if(tj[i] < tj[least_index]){
+				least_index = i;
+			}
+
+			// console.log("Time of collision with", i, "th side is:", tj[i]);
+
+		}
+		// console.log("the least time required for collision is", tj[least_index], "at index", least_index);
+		p.setTime(tj[least_index]);
+
+		return least_index;
 
 	},
 
@@ -93,8 +128,6 @@ var shape = {
 			var _length = _side.getLength();
 			var lenGen = Math.random() * _length;
 			var angleGen =  0;//Math.random() * 30 + this.sides.length*20;
-			console.log("The generated angle is :", angleGen);
-			console.log("The generated length is :", lenGen);
 			var tempVert = vector.createP(lenGen, angleGen);
 			this._vertX = tempVert.getX();// + (window.innerWidth*r_x))/nVert;
 			this._vertY = tempVert.getY();// + (window.innerHeight*r_y))/nVert;
@@ -120,44 +153,40 @@ var shape = {
 			var recent_angle = this.verts[lv - 1].getAngle();
 
 			var angleGen = Math.random() * (360/this.noOfVert) + recent_angle + (180/this.noOfVert);
-			console.log("The generated angle is :", angleGen);
 
 			var _lengthL = _length, _lengthU = _length;
 			var lenGen = Math.random() * (_lengthU - _lengthL) + _lengthL;
 
-			console.log("The generated length is :", lenGen);
 
 			var tempVert = vector.createP(lenGen, angleGen);
 
 			this._vertX = tempVert.getX();
 			this._vertY = tempVert.getY();
 
-			console.log("New X and Y:", this._vertX, this._vertY);
 			this.verts.push(vector.create(this._vertX, this._vertY));
 			this.vertsX.push(this._vertX);
 			this.vertsY.push(this._vertY);
 		}
 	},
 
+	particleInitiator : function()
+	{
+		var s = [];
+
+		var l = this.sides.length;
+		for (var i = 0; i < l; i += 1){
+				s.push(this.sides[i].distanceFromOrigin());
+		}
+
+		return Math.random() * Math.min(...s);
+	},
+
 	getDirection: function(sides, vertsX, vertsY){
 		var  s1 = sides[0], s2 = sides[1], s3 = sides[2];
 		for(var i=0; i<3; i+=1){
-			console.log("From function", sides[i].getAngle(), sides[i].getSlope());
-
-		}
+				console.log("From function", sides[i].getAngle(), sides[i].getSlope());
+			}
 		var angle1 = s1.getAngle(), angle2 = s2.getAngle(), angle3 = s3.getAngle();
-		// if( ((angle1>0 && angle1<90)  && (angle2>=90 && angle2<180)) || ((angle1>270 && angle1<360) && (angle2>180 && angle2<270))){
-		// 	return 1;
-		// }
-		// else if ((angle1>90 && angle1<180)  && (angle3>270 || angle3<90)) {
-		// 	return true;
-		// }
-		// else if ((angle1>=270 && angle1<360) && (angle3<90)) {
-		// 	return true;
-		// }
-		// else {
-		// 	return false;
-		// }
 		return (angle2 - angle1);
 	},
 
