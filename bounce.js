@@ -1,10 +1,23 @@
-window.onload = function() {
+function userInputs() {
+
+
+	var N, T, txt;
+
+	N = document.getElementById("number").value;
+	T = document.getElementById("confirmation").value
+
+	if(isNaN(N) || isNaN(T) || T < 0 || T > 1){
+		txt = "Input not valid";
+	}
+	else{
+		txt = "";
+	}
 	var canvas = document.getElementById("canvas"),
 		context = canvas.getContext("2d"),
 		width = canvas.width = window.innerWidth,
 		height = canvas.height = window.innerHeight;
 	context.transform(1, 0, 0, -1, 0, height);
-	var	s = shape.create(10);
+	var	s = shape.create(N, T);
   var p = particle.create(s.particleInitiator(), Math.random() * 360, 1, Math.random() * 360);
 	var x = p.position.getX(), y = p.position.getY();
 	//	context.fillStyle = "black";
@@ -62,4 +75,5 @@ window.onload = function() {
 
 		requestAnimationFrame(update);
 	}
+	// location.reload();
 };

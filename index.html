@@ -17,6 +17,12 @@
 	</style>
 </head>
 <body>
+	<p>input max number of sides in the shape</p>
+	<input type="number" id="number">
+	<p>Input the type of shape you want (input 0 for rational multiples of pi, 1 for irrational multiples)</p>
+	<input type="number" id="confirmation">
+	<button type="button" onmousedown="userInputs()" onmouseup="location.reload()" >Run</button>
+	<p id="demo"></p>
 	<div id = "page" width = "window.innerWidth" height = "window.innerHeight">
 	<canvas id="canvas"></canvas>
 </div>

@@ -10,7 +10,7 @@ var shape = {
 	_sideX: [],
 	_sideY: [],
 
-	create: function(n){
+	create: function(n, T){
 		var obj = Object.create(this);
 		obj.side = 3;
 		var canvas = document.getElementById("canvas"),
@@ -26,7 +26,13 @@ var shape = {
 		console.log(obj.noOfVert);
 //Loop for creating the vertices
 		for (var i = 0; i < obj.noOfVert; i += 1) {
-			obj.generateRandomPoint(/*0, obj.noOfVert, RXMap, RYMap*/);
+			// console.log("The value input for T is", T);
+			if(T == 1){
+				obj.generateRandomPoint(/*0, obj.noOfVert, RXMap, RYMap*/);
+			}
+			else{
+				obj.generateRandomPointRational();
+			}
 			context.fillStyle = "#FF0000";
 			context.beginPath();
 			context.arc(obj._vertX, obj._vertY, 8, 0, Math.PI * 2, false);
@@ -53,12 +59,7 @@ var shape = {
 		data = [data];
 
 		Plotly.newPlot('page', data, layout);
-//Check for loops(Crosses)
-		// for(var i = 0; i < obj.noOfVert; i += 1) {
-		// 	var j = obj.noOfVert % (i+1);
-		//
-		// 	if((obj.vertsY[j] ) || ())
-		// }
+
 		for(var i = 0; i < obj.noOfVert; i += 1) {
 			if(i < obj.noOfVert - 1) {
 				console.log(obj.sides[i].getSlope());
@@ -124,9 +125,9 @@ var shape = {
 	generateRandomPoint: function() {
 			if (this.verts.length < 1){
 
-			var _side = vector.create(window.innerWidth/2, window.innerHeight/2);
+			var _side = vector.create(0.5*window.innerWidth, 0.5*window.innerHeight);
 			var _length = _side.getLength();
-			var lenGen = Math.random() * _length;
+			var lenGen = Math.random() * _length/4 + 0.75*_length;
 			var angleGen =  0;//Math.random() * 30 + this.sides.length*20;
 			var tempVert = vector.createP(lenGen, angleGen);
 			this._vertX = tempVert.getX();// + (window.innerWidth*r_x))/nVert;
@@ -168,7 +169,54 @@ var shape = {
 			this.vertsY.push(this._vertY);
 		}
 	},
+	
+	generateRandomPointRational: function() {
+			if (this.verts.length < 1){
 
+			var _side = vector.create(window.innerWidth/2, window.innerHeight/2);
+			var _length = _side.getLength();
+			var lenGen = Math.random() * _length;
+			var angleGen =  0;//Math.random() * 30 + this.sides.length*20;
+			var tempVert = vector.createP(lenGen, angleGen);
+			this._vertX = tempVert.getX();// + (window.innerWidth*r_x))/nVert;
+			this._vertY = tempVert.getY();// + (window.innerHeight*r_y))/nVert;
+			this.verts.push(vector.create(this._vertX, this._vertY));
+			this.vertsX.push(this._vertX);
+			this.vertsY.push(this._vertY);
+
+		}
+		else{
+
+			var l = this.sides.length, lv = this.vertsX.length;
+
+			var c = 0;//Math.abs(this.sides[l - 1].getY_Intercept());
+			var _length = 0; c = 0;
+			if( c > this.verts[lv - 1].getLength() && c < 1.75*this.verts[lv-1].getLength())
+			{
+				_length = c;
+			}
+			else {
+				_length = this.verts[lv - 1].getLength();
+			}
+
+			var recent_angle = this.verts[lv - 1].getAngle();
+
+			var angleGen =(360/this.noOfVert) + recent_angle;
+
+			var _lengthL = _length, _lengthU = _length;
+			var lenGen = Math.random() * (_lengthU - _lengthL) + _lengthL;
+
+
+			var tempVert = vector.createP(lenGen, angleGen);
+
+			this._vertX = tempVert.getX();
+			this._vertY = tempVert.getY();
+
+			this.verts.push(vector.create(this._vertX, this._vertY));
+			this.vertsX.push(this._vertX);
+			this.vertsY.push(this._vertY);
+		}
+	},
 	particleInitiator : function()
 	{
 		var s = [];
