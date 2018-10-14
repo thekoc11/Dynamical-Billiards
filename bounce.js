@@ -1,11 +1,14 @@
+const data = [];
+
 function userInputs() {
 
 
 	var N, T, txt;
-
+	const timeLimit = document.getElementById("timeStep").value;
+	var Time = [];
 	N = document.getElementById("number").value;
-	T = document.getElementById("confirmation").value
-
+	T = document.getElementById("confirmation").value;
+	 
 	if(isNaN(N) || isNaN(T) || T < 0 || T > 1){
 		txt = "Input not valid";
 	}
@@ -27,6 +30,8 @@ function userInputs() {
 	context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
 	context.fill();
 	var time = 0;
+	data.push(p.position);
+	Time.push(time);
 // for(var i = 0; i < 5; i += 1){
 		// time = p.update(s, time);
 		// console.log("least time is", time);
@@ -38,42 +43,55 @@ function userInputs() {
 	update();
 
 	function update() {
-		// context.clearRect(0, 0, width, height);
-		//context.fillRect(0, 0, width, height);
-		time = p.update(s, time);
-		context.fillStyle = "#FFF000";
-		context.beginPath();
-		context.arc(p.position.getX(), p.position.getY(), p.radius - 4, 0, Math.PI * 2, false);
-		context.fill();
-	 	// console.log("Update function running", p.position.getX(), p.position.getY());
+		if(time < timeLimit){
+			time = p.update(s, time);
+			context.fillStyle = "#F00000";
+			context.beginPath();
+			context.arc(p.position.getX(), p.position.getY(), p.radius - 4, 0, Math.PI * 2, false);
+			context.fill();
 
-		if(p.position.getX() + p.radius > width) {
-			p.position.setX(width - p.radius);
-			p.velocity.setX(p.velocity.getX() * p.bounce);
+			if(p.position.getX() + p.radius > width) {
+				p.position.setX(width - p.radius);
+				p.velocity.setX(p.velocity.getX() * p.bounce);
+			}
+			if(p.position.getX() - p.radius < -width) {
+				p.position.setX(p.radius - width);
+				p.velocity.setX(p.velocity.getX() * p.bounce);
+			}
+			if(p.position.getY() + p.radius > height) {
+				p.position.setY(height - p.radius);
+				p.velocity.setY(p.velocity.getY() * p.bounce);
+			}
+			if(p.position.getY() - p.radius < -height) {
+				p.position.setY(p.radius - height);
+				p.velocity.setY(p.velocity.getY() * p.bounce);
+			}
+			time = time + 1;
+			// console.log("the value of time is now", time, timeLimit, data.length);
+			var l = data.length;
+			data.push(p);
+			Time.push(data, time);
+			console.log("position angle at time", time , " is: ", data[l].position.getAngle());
+			plt(Time);
+			requestAnimationFrame(update);
 		}
-		if(p.position.getX() - p.radius < -width) {
-			p.position.setX(p.radius - width);
-			p.velocity.setX(p.velocity.getX() * p.bounce);
-		}
-		if(p.position.getY() + p.radius > height) {
-			p.position.setY(height - p.radius);
-			p.velocity.setY(p.velocity.getY() * p.bounce);
-		}
-		if(p.position.getY() - p.radius < -height) {
-			p.position.setY(p.radius - height);
-			p.velocity.setY(p.velocity.getY() * p.bounce);
-		}
-		// if(p.position.getY() - (height/width)*p.position.getX() < p.radius){
-		// 	p.position.setY((height/width)*p.position.getX() + p.radius);
-		// 	if(p.velocity.getAngle() > 0){
-		// 		p.velocity.setAngle(p.velocity.getAngle() + 2*verts[1].getAngle());
-		// 	}
-		// 	if(p.velocity.getAngle() < 0){
-		// 		p.velocity.setAngle(-1*p.velocity.getAngle() + 2*verts[1].getAngle());
-		// 	}
+		// else{
+			
 		// }
-
-		requestAnimationFrame(update);
 	}
-	// location.reload();
+};
+
+function plt(data, Time){
+	var dataLength = [], dataAngle = []; 
+	console.log("The size of the arrays is: ", data.length);
+			for(var i = 0; i < data.length; i++){
+				dataLength.push(data[i].position.getLength());
+				dataAngle.push(data[i].position);
+			}
+			var data1 = trace.create(dataLength, Time);
+			var data2 = trace.create(dataAngle, Time);
+			data1.name = "LengthData";
+			data2.name = "AngleData";
+			var Data = [data1, data2];
+			Plotly.newPlot('dataVsT', Data, layout);
 };

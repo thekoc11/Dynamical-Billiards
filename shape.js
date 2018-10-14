@@ -153,8 +153,11 @@ var shape = {
 
 			var recent_angle = this.verts[lv - 1].getAngle();
 
-			var angleGen = Math.random() * (360/this.noOfVert) + recent_angle + (180/this.noOfVert);
-
+			var angleGen = Math.random() * (360/this.noOfVert) + recent_angle+ (180/this.noOfVert);
+			var diff = 360 - angleGen;
+			if(diff < 0){
+				angleGen = Math.random() *(360 - Math.abs(diff)) + recent_angle;
+			}
 			var _lengthL = _length, _lengthU = _length;
 			var lenGen = Math.random() * (_lengthU - _lengthL) + _lengthL;
 
@@ -175,7 +178,7 @@ var shape = {
 
 			var _side = vector.create(window.innerWidth/2, window.innerHeight/2);
 			var _length = _side.getLength();
-			var lenGen = Math.random() * _length;
+			var lenGen = Math.random() * (_length - 3*_length/4) + 3*_length/4;
 			var angleGen =  0;//Math.random() * 30 + this.sides.length*20;
 			var tempVert = vector.createP(lenGen, angleGen);
 			this._vertX = tempVert.getX();// + (window.innerWidth*r_x))/nVert;

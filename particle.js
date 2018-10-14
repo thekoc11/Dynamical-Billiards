@@ -60,7 +60,7 @@ var particle = {
 				reflected = (incident - 2*diff) + 180;
 			}
 			this.velocity = vector.createP(1, reflected);
-			console.log("Particle Velocity now is vx", this.velocity.getX(), " and vy", this.velocity.getY());
+			// console.log("Particle Velocity now is vx", this.velocity.getX(), " and vy", this.velocity.getY());
 			// t_ = 0;
 		// }
 		// else {

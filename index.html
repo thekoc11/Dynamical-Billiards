@@ -21,11 +21,15 @@
 	<input type="number" id="number">
 	<p>Input the type of shape you want (input 0 for rational multiples of pi, 1 for irrational multiples)</p>
 	<input type="number" id="confirmation">
-	<button type="button" onmousedown="userInputs()" onmouseup="location.reload()" >Run</button>
+	<p>Input the number of Timesteps</p>
+	<input type="number" id="timeStep">
+	<button type="button" onmousedown="userInputs()" >Run</button>
+	<button type="button" onmousedown="location.reload()">Reset</button>
 	<p id="demo"></p>
 	<div id = "page" width = "window.innerWidth" height = "window.innerHeight">
 	<canvas id="canvas"></canvas>
 </div>
+	<div id = "dataVsT" ></div>
 <script type="text/javascript" src="plotter.js"></script>
 <script type="text/javascript" src="vector.js"></script>
 <script type="text/javascript" src="particle.js"></script>
