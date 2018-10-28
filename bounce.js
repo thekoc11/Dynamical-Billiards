@@ -48,6 +48,10 @@ function userInputs() {
 		if(time < timeLimit){
 			time = p.update(s, time);
 			context.fillStyle = "#F00000";
+			context.strokeStyle = 'green';
+			context.lineWidth = 1;
+			context.lineTo(p.position.getX(), p.position.getY());
+			context.stroke();
 			context.beginPath();
 			context.arc(p.position.getX(), p.position.getY(), p.radius - 4, 0, Math.PI * 2, false);
 			context.fill();
@@ -93,6 +97,17 @@ function plt(Time, p){
 			var data2 = trace.create(Time, dataAngle);
 			data1.name = "LengthData";
 			data2.name = "AngleData";
-			var Data = [data1, data2];
-			Plotly.newPlot('dataVsT', Data, layout);
+			var Data = [data1];
+			layout.yaxis = {title: 'Distance from Origin'};
+			layout.xaxis = {title: 'Time Elapsed'}
+			Plotly.newPlot('LengthVsT', Data, layout);
+			
+			data2.line = {
+    						color: 'green',
+    						width: 1
+  						};
+  			Data = [data2];
+  			layout.yaxis = {title: 'Angle in degrees'};
+			Plotly.newPlot('AngleVsT', Data, layout);
+
 };
