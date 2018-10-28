@@ -1,4 +1,6 @@
 const data = [];
+const dataLength = [], dataAngle = []; 
+
 
 function userInputs() {
 
@@ -69,10 +71,12 @@ function userInputs() {
 			time = time + 1;
 			// console.log("the value of time is now", time, timeLimit, data.length);
 			var l = data.length;
-			data.push(p);
-			Time.push(data, time);
-			console.log("position angle at time", time , " is: ", data[l].position.getAngle());
-			plt(Time);
+			data.push(p.position);
+			dataLength.push(p.position.getLength());
+				dataAngle.push(p.position.getAngle());
+			Time.push(time);
+			console.log("position angle at time", time , " is: ", data[l].getAngle());
+			plt( Time, p);
 			requestAnimationFrame(update);
 		}
 		// else{
@@ -81,15 +85,12 @@ function userInputs() {
 	}
 };
 
-function plt(data, Time){
-	var dataLength = [], dataAngle = []; 
-	console.log("The size of the arrays is: ", data.length);
-			for(var i = 0; i < data.length; i++){
-				dataLength.push(data[i].position.getLength());
-				dataAngle.push(data[i].position);
-			}
-			var data1 = trace.create(dataLength, Time);
-			var data2 = trace.create(dataAngle, Time);
+function plt(Time, p){
+				
+	console.log("The size of the arrays is: ", dataLength.length, Time.length);
+
+			var data1 = trace.create(Time, dataLength);
+			var data2 = trace.create(Time, dataAngle);
 			data1.name = "LengthData";
 			data2.name = "AngleData";
 			var Data = [data1, data2];
