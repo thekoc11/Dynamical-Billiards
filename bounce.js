@@ -102,7 +102,7 @@ function plt(Time, p){
 			var data2 = trace.create(Time, dataAngle);
 			data1.name = "LengthData";
 			data2.name = "AngleData";
-			data.line = {
+			data1.line = {
 				width: 1
 			};
 			var Data = [data1];
