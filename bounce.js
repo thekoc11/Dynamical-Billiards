@@ -103,6 +103,7 @@ function plt(Time, p){
 			data1.name = "LengthData";
 			data2.name = "AngleData";
 			data1.line = {
+				color: 'red',
 				width: 1
 			};
 			var Data = [data1];
