@@ -27,6 +27,11 @@ function userInputs() {
 	var x = p.position.getX(), y = p.position.getY();
 	//	context.fillStyle = "black";
 	p.radius = 8;
+	context.beginPath();
+	context.fillStyle = 'blue';
+	context.arc(0, 0, p.radius, 0, Math.PI * 2, false);
+	context.fill();
+
 	context.fillStyle = "#FF0000";
 	context.beginPath();
 	context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
@@ -97,6 +102,9 @@ function plt(Time, p){
 			var data2 = trace.create(Time, dataAngle);
 			data1.name = "LengthData";
 			data2.name = "AngleData";
+			data.line = {
+				width: 1
+			};
 			var Data = [data1];
 			layout.yaxis = {title: 'Distance from Origin'};
 			layout.xaxis = {title: 'Time Elapsed'}
