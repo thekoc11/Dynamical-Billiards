@@ -7,8 +7,8 @@ function userInputs() {
 	var N, T, txt;
 	const timeLimit = document.getElementById("timeStep").value;
 	var Time = [];
-	N = document.getElementById("number").value;
-	T = document.getElementById("confirmation").value;
+	N = 20;//document.getElementById("number").value;
+	T = Math.floor(Math.random() * 2);//document.getElementById("confirmation").value;
 	 
 	if(isNaN(N) || isNaN(T) || T < 0 || T > 1){
 		txt = "Input not valid";
@@ -16,47 +16,54 @@ function userInputs() {
 	else{
 		txt = "";
 	}
-	var canvas = document.getElementById("canvas"),
-		context = canvas.getContext("2d"),
-		width = canvas.width = window.innerWidth,
-		height = canvas.height = window.innerHeight;
-	context.transform(1, 0, 0, -1, 0, height);   
-	var	s = shape.create(N, T);
-  var p = particle.create(s.particleInitiator(), Math.random() * 360, 1, Math.random() * 360);
-	var x = p.position.getX(), y = p.position.getY();
-	//	context.fillStyle = "black";
-	p.radius = 8;
-	context.beginPath();
-	context.fillStyle = 'blue';
-	context.arc(0, 0, p.radius, 0, Math.PI * 2, false);
-	context.fill();
+	while(dataset.length < 10){
+		T = Math.floor(Math.random() * 2);
+		var canvas = document.getElementById("canvas"),
+			context = canvas.getContext("2d"),
+			width = canvas.width = window.innerWidth,
+			height = canvas.height = window.innerHeight;
+		context.transform(1, 0, 0, -1, 0, height);   
+		var	s = shape.create(N, T);
+		var p = particle.create(s.particleInitiator(), Math.random() * 360, 1, Math.random() * 360);
+		var x = p.position.getX(), y = p.position.getY();
+		//	context.fillStyle = "black";
+		p.radius = 8;
+		context.beginPath();
+		context.fillStyle = 'blue';
+		context.arc(0, 0, p.radius, 0, Math.PI * 2, false);
+		context.fill();
 
-	context.fillStyle = "#FF0000";
-	context.beginPath();
-	context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
-	context.fill();
-	var time = 0;
-	data.push(p.position);
-	Time.push(time);
-    while(time < timeLimit){
-		time = p.update(s, time);
-		data.push([p.position, time]);
-		dataLength.push(p.position.getLength());
-		dataAngle.push(p.position.getAngle());
-		Time.push(time);
-		time = time + 1;
-		l = data.length;
-		plt(Time, p);
-		// console.log("Data recorded?", data[l-1][0].getLength());
-	}
-
+		context.fillStyle = "#FF0000";
+		context.beginPath();
+		context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
+		context.fill();
+		var time = 0;
+		// data.push(p.position);
+		// Time.push(time);
+		while(time < timeLimit){
+			time = p.update(s, time);
+			data.push([p.position, time]);
+			dataLength.push(p.position.getLength());
+			dataAngle.push(p.position.getAngle());
+			Time.push(time);
+			time = time + 1;
+			l = data.length;
+			// console.log("the value of t is", time);
+			// plt(Time, p);
+			// console.log("Data recorded?", data[l-1][0].getLength());
+		}
+		var d = canvas.toDataURL("image/png");
+		console.log(d);
+		context.clearRect(-width, -height, 2*width, 2*height);
 /*		context.fillStyle = "#FFF000";
 		context.beginPath();
 		context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
 		context.fill();}*/
 	//update();
-	dataset.push([data, T]); 
-
+		dataset.push([data, T]);
+		var __l = dataset.length;
+		console.log("Size of data and T", __l, T, dataset[__l-1][0][l-1][0].getLength()); 
+	}
 
 	function update() {
 		if(time < timeLimit){
