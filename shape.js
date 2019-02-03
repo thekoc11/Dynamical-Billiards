@@ -20,15 +20,15 @@ var shape = {
 
 		context.transform(0.5, 0, 0, -0.5, width/2, height/2);
 
-		// console.log(width, height);
+		
 
 		obj.noOfVert = obj.getRandomInt(n);
 		// console.log("No of vertices", obj.noOfVert);
 //Loop for creating the vertices
 		for (var i = 0; i < obj.noOfVert; i += 1) {
-			// console.log("The value input for T is", T);
+		
 			if(T == 1){
-				obj.generateRandomPoint(/*0, obj.noOfVert, RXMap, RYMap*/);
+				obj.generateRandomPoint();
 			}
 			else{
 				obj.generateRandomPointRational();
@@ -55,15 +55,14 @@ var shape = {
 			obj.sides.push(side.create(obj.vertsX[l], obj.vertsY[l], obj.vertsX[0], obj.vertsY[0]));
 		}
 		var data = trace.create(obj.vertsX, obj.vertsY);
-		// console.log(data.x, data.y);
+		
 		data = [data];
 
-		// Plotly.newPlot('page', data, layout);
+		
 
 		for(var i = 0; i < obj.noOfVert; i += 1) {
 			if(i < obj.noOfVert - 1) {
-				// console.log(obj.sides[i].getSlope());
-  		//	console.log(obj.sides[i].getAngle());
+		
 			}
 			context.moveTo(obj.vertsX[i], obj.vertsY[i]);
 
@@ -79,6 +78,9 @@ var shape = {
 			context.lineTo(obj.vertsX[j], obj.vertsY[j]);
 			context.stroke();
 		}
+		var d = canvas.toDataURL("image/png");
+		// console.log(d);
+		context.clearRect(-width, -height, 2*width, 2*height);
 		return obj;
 	},
 

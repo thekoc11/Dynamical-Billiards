@@ -26,7 +26,7 @@ function userInputs() {
 		var	s = shape.create(N, T);
 		var p = particle.create(s.particleInitiator(), Math.random() * 360, 1, Math.random() * 360);
 		var x = p.position.getX(), y = p.position.getY();
-		//	context.fillStyle = "black";
+
 		p.radius = 8;
 		context.beginPath();
 		context.fillStyle = 'blue';
@@ -38,31 +38,25 @@ function userInputs() {
 		context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
 		context.fill();
 		var time = 0;
-		// data.push(p.position);
-		// Time.push(time);
-		while(time < timeLimit){
-			time = p.update(s, time);
-			data.push([p.position, time]);
-			dataLength.push(p.position.getLength());
-			dataAngle.push(p.position.getAngle());
-			Time.push(time);
-			time = time + 1;
-			l = data.length;
-			// console.log("the value of t is", time);
-			// plt(Time, p);
-			// console.log("Data recorded?", data[l-1][0].getLength());
-		}
-		var d = canvas.toDataURL("image/png");
-		console.log(d);
-		context.clearRect(-width, -height, 2*width, 2*height);
-/*		context.fillStyle = "#FFF000";
-		context.beginPath();
-		context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
-		context.fill();}*/
+		
+		// while(time < timeLimit){
+		// 	time = p.update(s, time);
+		// 	data.push([p.position, time]);
+		// 	dataLength.push(p.position.getLength());
+		// 	dataAngle.push(p.position.getAngle());
+		// 	Time.push(time);
+		// 	time = time + 1;
+		// 	l = data.length;
+		// 	// console.log("the value of t is", time);
+		// 	// plt(Time, p);
+		// 	// console.log("Data recorded?", data[l-1][0].getLength());
+		// }
+		update();
+		// context.clearRect(-width, -height, 2*width, 2*height);
 	//update();
 		dataset.push([data, T]);
 		var __l = dataset.length;
-		console.log("Size of data and T", __l, T, dataset[__l-1][0][l-1][0].getLength()); 
+		console.log("Size of data and T", __l, T);//, dataset[__l-1][0][l-1][0].getLength()); 
 	}
 
 	function update() {
@@ -100,8 +94,8 @@ function userInputs() {
 			dataLength.push(p.position.getLength());
 				dataAngle.push(p.position.getAngle());
 			Time.push(time);
-			console.log("position angle at time", time , " is: ", data[l].getAngle());
-			plt( Time, p);
+			// console.log("position angle at time", time , " is: ", data[l].getAngle());
+			// plt( Time, p);
 			requestAnimationFrame(update);
 		}
 		// else{
