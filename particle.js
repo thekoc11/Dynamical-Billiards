@@ -43,7 +43,7 @@ var particle = {
 		if(normal > 360){
 			normal = normal - 360;
 		}
-		console.log("Angle of side and normal", mainAngle, normal);
+		// console.log("Angle of side and normal", mainAngle, normal);
 
 		// if(t_ == Math.floor(this._t))
 		// {

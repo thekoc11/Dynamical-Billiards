@@ -58,7 +58,7 @@ var shape = {
 		console.log(data.x, data.y);
 		data = [data];
 
-		Plotly.newPlot('page', data, layout);
+		// Plotly.newPlot('page', data, layout);
 
 		for(var i = 0; i < obj.noOfVert; i += 1) {
 			if(i < obj.noOfVert - 1) {
@@ -90,7 +90,7 @@ var shape = {
 		// console.log("The number os sides is:", this.sides.length);
 		var x1 = p.position.getX(), y1 = p.position.getY();
 		var vx = p.velocity.getX(), vy = p.velocity.getY();
-		console.log("Particle position and veloity are", x1, y1,  ":", vx, vy);
+		// console.log("Particle position and veloity are", x1, y1,  ":", vx, vy);
 		var s = this.sides.length;
 		for(var i = 0; i < s; i += 1){
 			var m = this.sides[i].getSlope(),

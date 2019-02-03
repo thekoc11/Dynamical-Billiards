@@ -1,6 +1,5 @@
 const data = [];
-const dataLength = [], dataAngle = []; 
-
+const dataLength = [], dataAngle = []; const dataset = [];
 
 function userInputs() {
 
@@ -21,7 +20,7 @@ function userInputs() {
 		context = canvas.getContext("2d"),
 		width = canvas.width = window.innerWidth,
 		height = canvas.height = window.innerHeight;
-	context.transform(1, 0, 0, -1, 0, height);
+	context.transform(1, 0, 0, -1, 0, height);   
 	var	s = shape.create(N, T);
   var p = particle.create(s.particleInitiator(), Math.random() * 360, 1, Math.random() * 360);
 	var x = p.position.getX(), y = p.position.getY();
@@ -39,15 +38,25 @@ function userInputs() {
 	var time = 0;
 	data.push(p.position);
 	Time.push(time);
-// for(var i = 0; i < 5; i += 1){
-		// time = p.update(s, time);
-		// console.log("least time is", time);
+    while(time < timeLimit){
+		time = p.update(s, time);
+		data.push([p.position, time]);
+		dataLength.push(p.position.getLength());
+		dataAngle.push(p.position.getAngle());
+		Time.push(time);
+		time = time + 1;
+		l = data.length;
+		plt(Time, p);
+		// console.log("Data recorded?", data[l-1][0].getLength());
+	}
 
 /*		context.fillStyle = "#FFF000";
 		context.beginPath();
 		context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
 		context.fill();}*/
-	update();
+	//update();
+	dataset.push([data, T]); 
+
 
 	function update() {
 		if(time < timeLimit){
