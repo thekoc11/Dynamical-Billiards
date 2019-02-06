@@ -16,6 +16,15 @@ var particle = {
 		return obj;
 	},
 
+	clear: function(){
+		this.position = null;
+		this.velocity = null;
+		this.mass = 1;
+		this.radius = 0;
+		this.bounce = -1;
+		this.gravity = 0;
+		this._t = 1;
+	},
 	getPosition : function(){
 		return this.position;
 	},

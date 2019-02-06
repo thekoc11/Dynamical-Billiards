@@ -84,6 +84,19 @@ var shape = {
 		return obj;
 	},
 
+	clear: function(){
+		this.sides = [];
+		this.verts = [];
+		this.vertsX = [];
+		this.vertsY = [];
+		delete this.side;
+		delete this.noOfVert;
+		delete this._vertX ;
+		delete this._vertY ;
+		this._sideX = [];
+		this._sideY = [];
+	},
+
 	calcTimeIndex: function(p){
 		var _an  = p.velocity.getAngle();
 		var time = 1, ti = [], tj = [];
@@ -129,7 +142,7 @@ var shape = {
 
 			var _side = vector.create(0.5*window.innerWidth, 0.5*window.innerHeight);
 			var _length = _side.getLength();
-			var lenGen = Math.random() * _length/4 + 0.5*_length;
+			var lenGen = 0.65*_length;
 			var angleGen =  0;//Math.random() * 30 + this.sides.length*20;
 			var tempVert = vector.createP(lenGen, angleGen);
 			this._vertX = tempVert.getX();// + (window.innerWidth*r_x))/nVert;
@@ -180,7 +193,7 @@ var shape = {
 
 			var _side = vector.create(window.innerWidth/2, window.innerHeight/2);
 			var _length = _side.getLength();
-			var lenGen = Math.random() * (_length - 3*_length/4) + _length/2;
+			var lenGen = 0.65*_length;
 			var angleGen =  0;//Math.random() * 30 + this.sides.length*20;
 			var tempVert = vector.createP(lenGen, angleGen);
 			this._vertX = tempVert.getX();// + (window.innerWidth*r_x))/nVert;

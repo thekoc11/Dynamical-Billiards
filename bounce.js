@@ -5,7 +5,7 @@ function userInputs() {
 
 
 	var N, T, txt;
-	const timeLimit = document.getElementById("timeStep").value;
+	const timeLimit = 1000;//document.getElementById("timeStep").value;
 	var Time = [];
 	N = 20;//document.getElementById("number").value;
 	T = Math.floor(Math.random() * 2);//document.getElementById("confirmation").value;
@@ -51,10 +51,15 @@ function userInputs() {
 		// 	// plt(Time, p);
 		// 	// console.log("Data recorded?", data[l-1][0].getLength());
 		// }
-		update();
+		// update();
 		// context.clearRect(-width, -height, 2*width, 2*height);
-	//update();
+		// update();
+		console.log("Particle X and Y (initial)", x, y, s.vertsX[0].getLength());
 		dataset.push([data, T]);
+		
+		p.clear();
+		s.clear();
+
 		var __l = dataset.length;
 		console.log("Size of data and T", __l, T);//, dataset[__l-1][0][l-1][0].getLength()); 
 	}
