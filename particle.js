@@ -40,18 +40,22 @@ var particle = {
 		this.position.addTo(this.velocity);
 
 		var main = s.sides[t];
-		var mainAngle = main.getAngle(), normal = 0;
+		if((this.position.getX() == main.getX1() || this.position.getX() == main.getX2()) && (this.position.getY() == main.getY1() || this.position.getY() == main.getY2())){
+			this.velocity = vector.createP(0, 0);
+		}
+		else{
+			var mainAngle = main.getAngle(), normal = 0;
 
-		if(mainAngle > 90 && mainAngle < 270){
-			normal = mainAngle - 90;
-		}
-		else {
-			normal = mainAngle + 90;
-		}
+			if(mainAngle > 90 && mainAngle < 270){
+				normal = mainAngle - 90;
+			}
+			else {
+				normal = mainAngle + 90;
+			}
 
-		if(normal > 360){
-			normal = normal - 360;
-		}
+			if(normal > 360){
+				normal = normal - 360;
+			}
 		// console.log("Angle of side and normal", mainAngle, normal);
 
 		// if(t_ == Math.floor(this._t))
@@ -75,7 +79,7 @@ var particle = {
 		// else {
 			// t_ = t_ + 1;
 		// }
-
+		}
 		return t_;
 	},
 

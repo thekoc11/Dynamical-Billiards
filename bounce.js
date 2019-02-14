@@ -1,13 +1,16 @@
 const data = [];
-const dataLength = [], dataAngle = []; const dataset = [];
+const dataLength = [], dataAngle = []; const dataset = []; const label = [];
+const datasetSize = 100;
+var timeLimit;
 
+tdata = [];
 function userInputs() {
 
 
 	var N, T, txt;
-	const timeLimit = 1000;//document.getElementById("timeStep").value;
+	timeLimit = document.getElementById("timeStep").value;
 	var Time = [];
-	N = 20;//document.getElementById("number").value;
+	N = 10;//document.getElementById("number").value;
 	T = Math.floor(Math.random() * 2);//document.getElementById("confirmation").value;
 	 
 	if(isNaN(N) || isNaN(T) || T < 0 || T > 1){
@@ -16,7 +19,7 @@ function userInputs() {
 	else{
 		txt = "";
 	}
-	while(dataset.length < 10){
+	while(dataset.length < datasetSize){
 		T = Math.floor(Math.random() * 2);
 		var canvas = document.getElementById("canvas"),
 			context = canvas.getContext("2d"),
@@ -37,13 +40,14 @@ function userInputs() {
 		context.beginPath();
 		context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
 		context.fill();
-		var time = 0;
+		time = 0;
 		
+
 		// while(time < timeLimit){
 		// 	time = p.update(s, time);
 		// 	data.push([p.position, time]);
 		// 	dataLength.push(p.position.getLength());
-		// 	dataAngle.push(p.position.getAngle());
+		// 	dataAngle.push([p.position.getAngle(), time]);
 		// 	Time.push(time);
 		// 	time = time + 1;
 		// 	l = data.length;
@@ -51,17 +55,29 @@ function userInputs() {
 		// 	// plt(Time, p);
 		// 	// console.log("Data recorded?", data[l-1][0].getLength());
 		// }
-		// update();
+		update();
 		// context.clearRect(-width, -height, 2*width, 2*height);
 		// update();
-		console.log("Particle X and Y (initial)", x, y, s.vertsX[0].getLength());
-		dataset.push([data, T]);
+		// console.log("Particle X and Y (initial)", x, y, s.vertsX[0], T);
+		dataset.push([dataLength, dataAngle]);
+		label.push(T);
+		l = data.length;
+		tdata.push(data);
 		
+		time = 0;
+		var __l = dataset.length;
+		// console.log("Size of data and T", __l, T, s.noOfVert, dataset[__l-1][0][l-1]); 
+		while (time < timeLimit){
+		console.log("Dataset variable values", dataset.length, dataset[_l-1][0][time]);
+		time = time + 1; 
+		}
+
+		data.splice(0, data.length);
+		dataLength.splice(0, dataLength.length);
+		dataAngle.splice(0,dataAngle.length);
+
 		p.clear();
 		s.clear();
-
-		var __l = dataset.length;
-		console.log("Size of data and T", __l, T);//, dataset[__l-1][0][l-1][0].getLength()); 
 	}
 
 	function update() {
@@ -95,7 +111,7 @@ function userInputs() {
 			time = time + 1;
 			// console.log("the value of time is now", time, timeLimit, data.length);
 			var l = data.length;
-			data.push(p.position);
+			data.push([p.position, time]);
 			dataLength.push(p.position.getLength());
 				dataAngle.push(p.position.getAngle());
 			Time.push(time);

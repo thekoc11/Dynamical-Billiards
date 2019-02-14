@@ -58,8 +58,13 @@ var side = {
   },
 
   distanceFromOrigin : function(){
-    var a = this.slope, b = -1, c = this.getY_Intercept();
+    var a = this.slope, b = -1, c = (this.getY_Intercept() != Infinity)?this.getY_Intercept():99999.0;
+    c = (this.getY_Intercept() === -Infinity)? -99999.0 : c;
+    a = (this.slope === Infinity) ? 99999.0 : a;
+    a = (this.slope === -Infinity) ? -99999.0: a;
     var dist = Math.abs(a*0 + b*0 + c)/Math.sqrt(a*a + b*b);
+
+    // console.log("distance from origin", dist, a, b, c);
     return dist;
   }
 }

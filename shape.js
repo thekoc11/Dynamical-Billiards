@@ -80,21 +80,22 @@ var shape = {
 		}
 		var d = canvas.toDataURL("image/png");
 		// console.log(d);
-		context.clearRect(-width, -height, 2*width, 2*height);
 		return obj;
 	},
 
 	clear: function(){
-		this.sides = [];
-		this.verts = [];
-		this.vertsX = [];
-		this.vertsY = [];
+		// context.clearRect(-width, -height, 2*width, 2*height);
+
+		this.sides.splice(0, this.sides.length);
+		this.verts.splice(0, this.verts.length);
+		this.vertsX.splice(0, this.vertsX.length);
+		this.vertsY.splice(0, this.vertsY.length);
 		delete this.side;
 		delete this.noOfVert;
 		delete this._vertX ;
 		delete this._vertY ;
-		this._sideX = [];
-		this._sideY = [];
+		this._sideX.splice(0, this._sideX.length);
+		this._sideY.splice(0, this._sideY.length);
 	},
 
 	calcTimeIndex: function(p){
@@ -111,13 +112,15 @@ var shape = {
 			var m = this.sides[i].getSlope(),
 					c = this.sides[i].getY_Intercept();
 			ti.push((m*x1 + c - y1)/(vy - m*vx));
-			if(ti[i] <= 0.00001){
+			if(ti[i] <= 0.0001){
 				tj.push(Infinity);
 			}
 			else{
 				tj.push(ti[i]);
 			}
-
+			if(tj[i] > 600){
+				console.log("Erratic time calc", tj[i]);
+			}
 			if(tj[i] < tj[least_index]){
 				least_index = i;
 			}
@@ -125,7 +128,7 @@ var shape = {
 			// console.log("Time of collision with", i, "th side is:", tj[i]);
 
 		}
-		// console.log("the least time required for collision is", tj[least_index], "at index", least_index);
+		// console.log("the least time required for collision is", tj, "at index", least_index);
 		p.setTime(tj[least_index]);
 
 		return least_index;
@@ -168,10 +171,13 @@ var shape = {
 
 			var recent_angle = this.verts[lv - 1].getAngle();
 
-			var angleGen = Math.random() * (360/this.noOfVert) + recent_angle+ (180/this.noOfVert);
+			var angleGen = Math.random() * (360/this.noOfVert) + recent_angle;//+ (180/this.noOfVert);
 			var diff = 360 - angleGen;
 			if(diff < 0){
 				angleGen = Math.random() *(360 - Math.abs(diff)) + recent_angle;
+			}
+			if (diff > 180 && this.verts.length == (this.noOfVert - 1)){
+				angleGen = diff;
 			}
 			var _lengthL = _length, _lengthU = _length;
 			var lenGen = Math.random() * (_lengthU - _lengthL) + _lengthL;
@@ -243,7 +249,8 @@ var shape = {
 				s.push(this.sides[i].distanceFromOrigin());
 		}
 
-		return Math.random() * Math.min(...s);
+		ret = Math.random() * Math.min(...s);
+		return ret
 	},
 
 	getDirection: function(sides, vertsX, vertsY){
