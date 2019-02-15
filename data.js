@@ -1,4 +1,5 @@
-function convertToTensors(dataset, labels, splitPoint){
+function convertToTensors(dataset, labels, splitPoint)
+{
     const numEx = dataset.length;
     if(numEx !== labels.length){
         throw new Error("Dataset and Labels are not equal in length");
@@ -19,6 +20,7 @@ function convertToTensors(dataset, labels, splitPoint){
     for (i =0; i < numEx; ++i){
         shuffeledData.push(dataset[indices[i]]);
         shuffledLabels.push(labels[indices[i]]);
+        console.log("Shuffled Data", shuffeledData[i]);
     }
 
     const numTestEx = Math.round(numEx * splitPoint);
@@ -28,11 +30,11 @@ function convertToTensors(dataset, labels, splitPoint){
     const yDim = shuffledLabels[0].length;
 
     const xs = tf.tensor2d(shuffeledData, [numEx, xDim]);
-    const ys = tf.tensor2d(shuffledLabels, [numEx, yDim]);
+    const ys = tf.tensor2d(shuffledLabels, [numEx, 1]);
 
     const xTrain = xs.slice([0, 0], [numTrainEx, xDim]);
     const xTest = xs.slice([numTrainEx, 0], [numTestEx, xDim]);
-    const yTrain = ys.slice([0, 0], [numTrainEx, yDim]);
-    const yTest = ys.slice([numTrainEx, 0], [numTestEx, yDim]);
+    const yTrain = ys.slice([0, 0], [numTrainEx, 1]);
+    const yTest = ys.slice([numTrainEx, 0], [numTestEx, 1]);
     return [xTrain, xTest, yTrain, yTest];
 }

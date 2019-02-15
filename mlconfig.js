@@ -1,4 +1,4 @@
-async function classify(xTrain, xTest, yTrain, yTest) {
+function classify(xTrain, xTest, yTrain, yTest) {
     tf.tidy(() => {
         const model = tf.sequential();
 

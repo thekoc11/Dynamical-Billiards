@@ -65,25 +65,25 @@ function userInputs() {
 		// update();
 		// console.log("Particle X and Y (initial)", x, y, s.vertsX[0], T);
 		for (i = 0; i < dataLength.length; ++i) {
-			if (!isNaN(dataLength[i])) {
+			if (!isNaN(dataLength[i]) && dataLength[i] !== Infinity) {
 				ex.push([dataLength[i], dataAngle[i]]);
 			}
 		}
 
-		console.log(ex[0]);
-		// if(ex.length !== 0){
-			// _dataVal = pca(ex);
-		// console.log(_dataVal);
-		// }
+		// console.log(ex[0]);
+		if(ex.length !== 0){
+			_dataVal = pca(ex);
+			dataset.push(_dataVal);
+			label.push(T);
+			// console.log(_dataVal);
+		}
 		
 		// pca(ex).then((res)=>{
 		// 	_dataVal = res;
 		// 	console.log(res);
 		// }).catch((err) => console.log(err));
-		label.push(T);
 		l = data.length;
 		tdata.push(data);
-		dataset.push(dataset.length);
 
 		ex.splice(0, ex.length);
 		data.splice(0, data.length);
@@ -92,8 +92,11 @@ function userInputs() {
 
 		p.clear();
 		s.clear();
-		console.log("Code Completion");
+		console.log("Code Completion", dataset.length);
 	}
+
+	[xTrain, xTest, yTrain, yTest] = convertToTensors(dataset, label, 0.15);
+	classify(xTrain, xTest, yTrain, yTest);
 
 	function update() {
 		if (time < timeLimit) {
