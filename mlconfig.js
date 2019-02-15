@@ -2,20 +2,26 @@ function classify(xTrain, xTest, yTrain, yTest) {
     tf.tidy(() => {
         const model = tf.sequential();
 
-        const hidden = tf.layers.dense({
-            units: 4,
+        const hidden1 = tf.layers.dense({
+            units: 5,
             inputShape: [2],
             activation: 'sigmoid'
         });
-        model.add(hidden);
+        model.add(hidden1);
 
+        // const hidden2 = tf.layers.dense({
+        //     units: 4,
+        //     // inputShape: [2],
+        //     activation: 'softmax'
+        // });
+        // model.add(hidden2);
         const output = tf.layers.dense({
             units: 1,
             activation: 'sigmoid'
         });
         model.add(output);
 
-        const sgdOpt = tf.train.adam(0.1);
+        const sgdOpt = tf.train.adam(0.01);
         model.compile({
             optimizer: sgdOpt,
             loss: tf.losses.meanSquaredError

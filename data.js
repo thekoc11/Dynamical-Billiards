@@ -20,7 +20,7 @@ function convertToTensors(dataset, labels, splitPoint)
     for (i =0; i < numEx; ++i){
         shuffeledData.push(dataset[indices[i]]);
         shuffledLabels.push(labels[indices[i]]);
-        console.log("Shuffled Data", shuffeledData[i]);
+        // console.log("Shuffled Data", shuffeledData[i]);
     }
 
     const numTestEx = Math.round(numEx * splitPoint);
