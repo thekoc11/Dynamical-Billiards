@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title></title>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -7,16 +8,19 @@
 	<!--<script type="text/javascript" src="regen.js"></script>-->
 	<!--<script type="text/javascript" src="regen_extra.js"></script>-->
 	<style type="text/css">
-	html, body {
-		margin: 0px;
-	}
+		html,
+		body {
+			margin: 0px;
+		}
 
-	canvas {
-		display: block;
-	}
-
+		canvas {
+			display: block;
+		}
 	</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
 	<p>input max number of sides in the shape</p>
 	<input type="number" id="number">
@@ -24,23 +28,24 @@
 	<input type="number" id="confirmation">
 	<p>Input the number of Timesteps</p>
 	<input type="number" id="timeStep">
-	<button type="button" onmousedown="userInputs()" >Run</button>
+	<button type="button" onmousedown="userInputs()">Run</button>
 	<button type="button" onmousedown="location.reload()">Reset</button>
 	<p id="demo"></p>
-	<div id = "page" width = "window.innerWidth" height = "window.innerHeight">
-	<canvas id="canvas"></canvas>
-</div>
-	<div id = "LengthVsT" ></div>
-	<div id = "AngleVsT" ></div>
-<script type="text/javascript" src="plotter.js"></script>
-<script type="text/javascript" src="vector.js"></script>
-<script type="text/javascript" src="particle.js"></script>
-<script type="text/javascript" src="side.js"></script>
-<!--<script type="text/javascript" src="wrapping.js"></script>-->
-<script type="text/javascript" src="bounce.js"></script>
-<script type="text/javascript" src="shape.js"></script>
-<script type="text/javascript" src="pcs.js"></script>
-<script type="text/javascript" src="mlconfig.js"></script>
- 
+	<div id="page" width="window.innerWidth" height="window.innerHeight">
+		<canvas id="canvas"></canvas>
+	</div>
+	<div id="LengthVsT"></div>
+	<div id="AngleVsT"></div>
+	<script type="text/javascript" src="plotter.js"></script>
+	<script type="text/javascript" src="vector.js"></script>
+	<script type="text/javascript" src="particle.js"></script>
+	<script type="text/javascript" src="side.js"></script>
+	<!--<script type="text/javascript" src="wrapping.js"></script>-->
+	<script type="text/javascript" src="bounce.js"></script>
+	<script type="text/javascript" src="shape.js"></script>
+	<script type="text/javascript" src="pcs.js"></script>
+	<script type="text/javascript" src="mlconfig.js"></script>
+
 </body>
+
 </html>

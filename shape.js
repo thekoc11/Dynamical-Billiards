@@ -119,7 +119,7 @@ var shape = {
 				tj.push(ti[i]);
 			}
 			if(tj[i] > 600){
-				console.log("Erratic time calc", tj[i]);
+				// console.log("Erratic time calc", tj[i]);
 			}
 			if(tj[i] < tj[least_index]){
 				least_index = i;
