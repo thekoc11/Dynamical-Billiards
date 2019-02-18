@@ -3,7 +3,7 @@ function classify(xTrain, xTest, yTrain, yTest) {
         const model = tf.sequential();
 
         const hidden1 = tf.layers.dense({
-            units: 5,
+            units: 4,
             inputShape: [2],
             activation: 'sigmoid'
         });
@@ -21,10 +21,11 @@ function classify(xTrain, xTest, yTrain, yTest) {
         });
         model.add(output);
 
-        const sgdOpt = tf.train.adam(0.01);
+        const sgdOpt = tf.train.adam(0.1);
         model.compile({
             optimizer: sgdOpt,
-            loss: tf.losses.meanSquaredError
+            loss: 'meanSquaredError',
+            metrics: ['accuracy'],
         });
 
         const _ds = tf.tensor2d([
@@ -58,14 +59,25 @@ function classify(xTrain, xTest, yTrain, yTest) {
                 let _op = model.predict(xTest);
                 _op.print();
                 yTest.print();
-                console.log("training complete");
+                let correct = 0;
+                let _pre = _op.dataSync();
+                let _orig = yTest.dataSync();
+                for(i = 0; i < _pre.length; ++i){
+                    if(Math.abs(_pre[i] - _orig[i]) < 0.5){
+                        correct = correct + 1;
+                    }
+                }
+                let accuracy;
+                accuracy = (correct/_pre.length)*100;
+                console.log("training complete, accuracy is ", accuracy);
             })
             .catch((err) => console.log(err));
 
         async function train() {
-            for (let index = 0; index < 1000; index++) {
+            for (let index = 0; index < 100; index++) {
                 const config = {
                     shuffle: true,
+                    // validationData: [xTest, yTest],
                     epochs: 10
                 };
 

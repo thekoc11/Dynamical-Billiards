@@ -94,8 +94,11 @@ function userInputs() {
 		s.clear();
 		console.log("Code Completion", dataset.length);
 	}
-
+	
+	//Create Tensors that can be used as Training and Testing sets from the obtained dataset. %data for test= 1.5%
 	[xTrain, xTest, yTrain, yTest] = convertToTensors(dataset, label, 0.15);
+
+	// Classify the obtained data and predict
 	classify(xTrain, xTest, yTrain, yTest);
 
 	function update() {
