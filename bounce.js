@@ -3,11 +3,17 @@ const dataLength = [],
 	dataAngle = [];
 const dataset = [];
 const label = [];
-const datasetSize = 100;
+const datasetSize = 10000;
 var timeLimit;
 
 const ex = [];
 tdata = [];
+
+const labelSet = [
+    'Rational',
+    'Irrational'
+];
+
 
 function userInputs() {
 
@@ -96,7 +102,7 @@ function userInputs() {
 	}
 	
 	//Create Tensors that can be used as Training and Testing sets from the obtained dataset. %data for test= 1.5%
-	[xTrain, xTest, yTrain, yTest] = convertToTensors(dataset, label, 0.15);
+	[xTrain, xTest, yTrain, yTest] = convertToTensors(dataset, label, 0.2);
 
 	// Classify the obtained data and predict
 	classify(xTrain, xTest, yTrain, yTest);

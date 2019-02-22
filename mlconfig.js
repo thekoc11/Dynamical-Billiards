@@ -1,9 +1,11 @@
+
+
 function classify(xTrain, xTest, yTrain, yTest) {
     tf.tidy(() => {
         const model = tf.sequential();
 
         const hidden1 = tf.layers.dense({
-            units: 4,
+            units: 10,
             inputShape: [2],
             activation: 'sigmoid'
         });
@@ -16,15 +18,15 @@ function classify(xTrain, xTest, yTrain, yTest) {
         // });
         // model.add(hidden2);
         const output = tf.layers.dense({
-            units: 1,
-            activation: 'sigmoid'
+            units: 2,
+            activation: 'softmax'
         });
         model.add(output);
 
-        const sgdOpt = tf.train.adam(0.1);
+        const sgdOpt = tf.train.adam(0.01);
         model.compile({
             optimizer: sgdOpt,
-            loss: 'meanSquaredError',
+            loss: 'categoricalCrossentropy',
             metrics: ['accuracy'],
         });
 
@@ -76,9 +78,10 @@ function classify(xTrain, xTest, yTrain, yTest) {
         async function train() {
             for (let index = 0; index < 100; index++) {
                 const config = {
-                    shuffle: true,
                     // validationData: [xTest, yTest],
-                    epochs: 10
+                    epochs: 10,
+                    validationSplit: 0.1,
+                    shuffle: true
                 };
 
                 const resp = await model.fit(xTrain, yTrain, config);
