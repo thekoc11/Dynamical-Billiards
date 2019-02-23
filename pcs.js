@@ -70,7 +70,8 @@ function pca(X){
     // M.matMul(Q).print();
 
     Zstar = Z.matMul(Q).slice([0, 0], [1, 2]);
-    retVal = Zstar.dataSync();
+    retVal = [Zstar.dataSync()[0], Zstar.dataSync()[1], xstd.dataSync()[0], xstd.dataSync()[1]];
+    
     // Zstar.print();
     });
     return retVal;

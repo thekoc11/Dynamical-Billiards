@@ -6,7 +6,7 @@ function classify(xTrain, xTest, yTrain, yTest) {
 
         const hidden1 = tf.layers.dense({
             units: 10,
-            inputShape: [2],
+            inputShape: [4],
             activation: 'sigmoid'
         });
         model.add(hidden1);

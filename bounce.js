@@ -3,7 +3,7 @@ const dataLength = [],
 	dataAngle = [];
 const dataset = [];
 const label = [];
-const datasetSize = 10000;
+const datasetSize = 100;
 var timeLimit;
 
 const ex = [];
@@ -72,7 +72,7 @@ function userInputs() {
 		// console.log("Particle X and Y (initial)", x, y, s.vertsX[0], T);
 		for (i = 0; i < dataLength.length; ++i) {
 			if (!isNaN(dataLength[i]) && dataLength[i] !== Infinity) {
-				ex.push([dataLength[i], dataAngle[i]]);
+				ex.push([dataLength[i]/s.verts[0].getLength(), dataAngle[i]/360]);
 			}
 		}
 
