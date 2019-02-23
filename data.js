@@ -32,9 +32,10 @@ function convertToTensors(dataset, labels, splitPoint)
     const xs = tf.tensor2d(shuffeledData, [numEx, xDim]);
     const _lv = tf.tensor1d(shuffledLabels, 'int32');
     const ys = tf.oneHot(_lv, 2);
-    ys.print();
-    _lv.print();
-
+    // ys.print();
+    // _lv.print();
+    _lv.dispose();
+    
     const xTrain = xs.slice([0, 0], [numTrainEx, xDim]);
     const xTest = xs.slice([numTrainEx, 0], [numTestEx, xDim]);
     const yTrain = ys.slice([0, 0], [numTrainEx, 2]);
