@@ -22,7 +22,7 @@ function pca(X){
 
     const x = tf.variable(tf.tensor2d(X, [num, xDim]));
 
-    let xbar = x.mean(0);
+    let xbar = tf.moments(x, 0).mean;
     // console.log("Mean");
     // xbar.print();
     // tf.moments(x, 0).mean.print();
@@ -70,7 +70,7 @@ function pca(X){
     // M.matMul(Q).print();
 
     Zstar = Z.matMul(Q).slice([0, 0], [1, 2]);
-    retVal = [Zstar.dataSync()[0], Zstar.dataSync()[1], xstd.dataSync()[0], xstd.dataSync()[1]];
+    retVal = [xbar.dataSync()[0], xbar.dataSync()[1], xstd.dataSync()[0], xstd.dataSync()[1]];
     
     // Zstar.print();
     });

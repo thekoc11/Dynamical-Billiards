@@ -3,7 +3,7 @@ const dataLength = [],
 	dataAngle = [];
 const dataset = [];
 const label = [];
-const datasetSize = 100;
+const datasetSize = 1000;
 var timeLimit;
 
 const ex = [];
