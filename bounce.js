@@ -3,7 +3,7 @@ const dataLength = [],
 	dataAngle = [];
 const dataset = [];
 const label = [];
-const datasetSize = 1000;
+const datasetSize = 100;
 var timeLimit;
 
 const ex = [];
@@ -98,7 +98,7 @@ function userInputs() {
 
 		p.clear();
 		s.clear();
-		console.log("Code Completion", dataset.length);
+		console.log("Code Completion", dataset.length, T);
 	}
 	
 	//Create Tensors that can be used as Training and Testing sets from the obtained dataset. %data for test= 1.5%

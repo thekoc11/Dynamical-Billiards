@@ -6,7 +6,7 @@ function classify(xTrain, xTest, yTrain, yTest) {
 
         const hidden1 = tf.layers.dense({
             units: 10,
-            inputShape: [4],
+            inputShape: [6],
             activation: 'sigmoid'
         });
         model.add(hidden1);
@@ -76,12 +76,18 @@ function classify(xTrain, xTest, yTrain, yTest) {
             .catch((err) => console.log(err));
 
         async function train() {
-            for (let index = 0; index < 100; index++) {
+            for (let index = 0; index < 10; index++) {
                 const config = {
                     // validationData: [xTest, yTest],
-                    epochs: 10,
+                    epochs: 70,
                     validationSplit: 0.1,
-                    shuffle: true
+                    shuffle: true,
+                    callbacks: {
+                        onEpochEnd:(num, log) => {
+                            console.log(`Epoch: ${num}`);
+                            console.log(`loss: ${log.val_loss}`);
+                        }
+                    }
                 };
 
                 const resp = await model.fit(xTrain, yTrain, config);
