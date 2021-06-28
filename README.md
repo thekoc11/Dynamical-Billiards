@@ -2,6 +2,6 @@
 
 An implementation of Dynamical Billiards in Javascript. 
 
-## Future Plans:
+## Machine Learning:
 
-Application of Machine Learning Concepts for the classification of the Billiards as Rational or Irrational
+Check the `development` branch for the implementation of multi-layer perceptrons for classification of Dynamical Billiards
